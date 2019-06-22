@@ -1,0 +1,184 @@
+<nav class="navbar navbar-light bg-dark">
+  <a class="navbar-brand" href="#">
+    LOGO
+  </a>
+</nav>
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <app-topic-list></app-topic-list>
+    </div>
+    <div class="col-md-7">
+      <app-topic-details></app-topic-details>
+      <app-topic-edit></app-topic-edit>
+    </div>
+  </div>
+</div> -->
+
+<div class="sec1">
+  <h1 class="heading">Add/Edit Syllabus</h1>
+</div>
+<hr />
+
+<div class="sec2">
+  <div class="container row mt-3">
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-danger dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Board
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">CBSC</a>
+          <a class="dropdown-item" href="#">ICSC</a>
+          <a class="dropdown-item" href="#">STATE</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-danger dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          class
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">1st</a>
+          <a class="dropdown-item" href="#">2nd</a>
+          <a class="dropdown-item" href="#">3rd</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-danger dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Subject
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Maths</a>
+          <a class="dropdown-item" href="#">Science</a>
+          <a class="dropdown-item" href="#">English</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-danger dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Academic Year
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">2019-2020</a>
+          <a class="dropdown-item" href="#">2020-2021</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row txarea">
+      <textarea
+        name=""
+        id=""
+        cols="40"
+        rows="3"
+        placeholder="Syllabus description"
+        class="col-md-7 form-control"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="topiclist">
+      <div class="row topic" *ngFor="let item of topics">
+        <div class="m-1" (click)="onEditTopic(item)">
+          <h4>{{ item.name }}</h4>
+        </div>
+
+        <h6>
+          <span
+            class="badge badge-secondary"
+            (click)="deleteTopic(item)"
+            style="cursor: pointer"
+            >X</span
+          >
+        </h6>
+      </div>
+      <button class="btn btn-primary" (click)="openInputs()">+</button>
+    </div>
+
+    <div class="inputs" *ngIf="editOn">
+      <div class="row mb-2">
+        <div class="col-md-12">
+          <button
+            class="btn btn-success"
+            (click)="addNewTopic(newtopic, newsubtopic)"
+          >
+            save
+          </button>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-5">
+          <span>topic</span>
+          <input type="text" class="form-control" [(ngModel)]="newtopic.name" />
+        </div>
+        <div class="col-md-7">
+          <span>description</span>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newtopic.description"
+          />
+        </div>
+      </div>
+      <hr />
+      <div class="row mb-2" *ngFor="let subs of subtopics">
+        <div class="col-md-5">
+          <span>subtopic</span>
+          <input type="text" class="form-control" />
+        </div>
+        <div class="col-md-5">
+          <span>description</span>
+          <div class="row">
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-1  mt-4 subtopicclose">
+          <h6>
+            <span class="badge badge-secondary" (click)="deleteSubtopic(subs)"
+              >X</span
+            >
+          </h6>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12">
+          <button class="btn btn-success" (click)="addSubtopic(newsubtopic)">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
