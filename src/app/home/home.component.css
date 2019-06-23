@@ -1,6 +1,10 @@
 nav a {
   color: white;
 }
+.sec1 {
+  display: flex;
+  justify-content: space-between;
+}
 
 .sec2 {
   width: 100%;
@@ -57,4 +61,8 @@ nav a {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.submit {
+  margin: 50px;
 }
