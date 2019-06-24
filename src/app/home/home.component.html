@@ -3,19 +3,6 @@
     LOGO
   </a>
 </nav>
-<!-- <hr /> -->
-
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-md-5">
-      <app-topic-list></app-topic-list>
-    </div>
-    <div class="col-md-7">
-      <app-topic-details></app-topic-details>
-      <app-topic-edit></app-topic-edit>
-    </div>
-  </div>
-</div> -->
 
 <div class="sec1">
   <h1 class="heading col-md-5 mt-4">Add/Edit Syllabus</h1>
@@ -28,22 +15,6 @@
 <div class="sec2">
   <div class="container row mt-3">
     <div class="col-md-3">
-      <!-- <div class="btn-group">
-        <button
-          type="button"
-          class="btn btn-danger dropdown-toggle"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Board
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">CBSC</a>
-          <a class="dropdown-item" href="#">ICSC</a>
-          <a class="dropdown-item" href="#">STATE</a>
-        </div>
-      </div> -->
       <label class="m-0"> <h6 class="m-0 ml-1">Board</h6></label>
 
       <select class="custom-select">
@@ -56,28 +27,10 @@
       <label class="m-0"> <h6 class="m-0 ml-1">Class</h6></label>
 
       <select class="custom-select">
-        <!-- <option selected>class</option> -->
         <option value="1">1st</option>
         <option value="2">2nd</option>
         <option value="3">3rd</option>
       </select>
-
-      <!-- <div class="btn-group">
-        <button
-          type="button"
-          class="btn btn-danger dropdown-toggle"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          class
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">1st</a>
-          <a class="dropdown-item" href="#">2nd</a>
-          <a class="dropdown-item" href="#">3rd</a>
-        </div>
-      </div> -->
     </div>
     <div class="col-md-3">
       <label class="m-0"> <h6 class="m-0 ml-1">Subject</h6></label>
@@ -100,8 +53,6 @@
 
     <div class="row txarea">
       <textarea
-        name=""
-        id=""
         cols="40"
         rows="3"
         placeholder="Syllabus description"
@@ -121,34 +72,47 @@
 
         <h6>
           <span
-            class="badge badge-secondary"
+            class="badge badge-secondary rounded"
             (click)="deleteTopic(item)"
             style="cursor: pointer"
-            >X</span
           >
+            X
+          </span>
         </h6>
       </div>
-      <button class="btn btn-primary" (click)="openInputs()">+</button>
+      <button class="btn btn-primary rounded" (click)="openInputs()">+</button>
     </div>
 
-    <div class="inputs" *ngIf="editOn">
+    <!-- new form -->
+    <div class="inputs" *ngIf="newOn">
+      <label class=""> <h6 class="">Add New Topics</h6></label>
+
       <div class="row mb-2">
-        <div class="col-md-12">
+        <div class="col-md-2">
           <button
-            class="btn btn-success"
+            class="btn btn-success nobr"
             (click)="addNewTopic(newtopic, newsubtopic)"
           >
             save
           </button>
         </div>
+        <div class="col-md-2">
+          <button class="btn btn-danger nobr" (click)="closeforms()">
+            cancel
+          </button>
+        </div>
       </div>
+      <h6 class="" *ngIf="hint2">Topic name cant be blank</h6>
+      <h6 class="" *ngIf="hint">Topic already exists</h6>
+      <hr />
       <div class="row mb-2">
         <div class="col-md-5">
-          <span>topic</span>
+          <label class=""> <h6 class="">Topic</h6></label>
           <input type="text" class="form-control" [(ngModel)]="newtopic.name" />
         </div>
         <div class="col-md-7">
-          <span>description</span>
+          <label class=""> <h6 class="">Descrition</h6></label>
+
           <input
             type="text"
             class="form-control"
@@ -159,18 +123,25 @@
       <hr />
       <div class="row mb-2" *ngFor="let subs of subtopics">
         <div class="col-md-5">
-          <span>subtopic</span>
-          <input type="text" class="form-control" />
+          <label class=""> <h6 class="">Subtopic</h6></label>
+          <input type="text" class="form-control" [(ngModel)]="subs.name" />
         </div>
         <div class="col-md-5">
-          <span>description</span>
+          <label class=""> <h6 class="">Description</h6></label>
+
           <div class="row">
-            <input type="text" class="form-control" />
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="subs.description"
+            />
           </div>
         </div>
         <div class="col-md-1  mt-4 subtopicclose">
           <h6>
-            <span class="badge badge-secondary" (click)="deleteSubtopic(subs)"
+            <span
+              class="badge badge-secondary rounded"
+              (click)="deleteSubtopic(subs)"
               >X</span
             >
           </h6>
@@ -179,7 +150,85 @@
 
       <div class="row mb-2">
         <div class="col-md-12">
-          <button class="btn btn-success" (click)="addSubtopic(newsubtopic)">
+          <button class="btn btn-success rounded" (click)="addSubtopic()">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit form -->
+    <div class="inputs" *ngIf="editOn">
+      <label class="">
+        <h6 class="">Edit Topics</h6>
+      </label>
+
+      <div class="row mb-2">
+        <div class="col-md-2">
+          <button
+            class="btn btn-success nobr"
+            (click)="addReplaceTopic(newtopic, newsubtopic)"
+          >
+            save
+          </button>
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-danger nobr " (click)="closeforms()">
+            cancel
+          </button>
+        </div>
+      </div>
+      <h6 class="" *ngIf="hint2">Topic name cant be blank</h6>
+      <h6 class="" *ngIf="hint">Topic already exists</h6>
+      <hr />
+      <div class="row mb-2">
+        <div class="col-md-5">
+          <label class=""> <h6 class="">Topic</h6></label>
+
+          <input type="text" class="form-control" [(ngModel)]="newtopic.name" />
+        </div>
+        <div class="col-md-7">
+          <label class=""> <h6 class="">Description</h6></label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newtopic.description"
+          />
+        </div>
+      </div>
+      <hr />
+      <div class="row mb-2" *ngFor="let subs of subtopics">
+        <div class="col-md-5">
+          <label class=""> <h6 class="">Subtopic</h6></label>
+          <input type="text" class="form-control" [(ngModel)]="subs.name" />
+        </div>
+        <div class="col-md-5">
+          <label class=""> <h6 class="">Description</h6></label>
+
+          <div class="row">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="subs.description"
+            />
+          </div>
+        </div>
+        <div class="col-md-1  mt-4 subtopicclose">
+          <h6>
+            <span
+              class="badge badge-secondary rounded"
+              (click)="deleteSubtopic(subs)"
+              >X</span
+            >
+          </h6>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12">
+          <button class="btn btn-success rounded" (click)="addSubtopic()">
             +
           </button>
         </div>

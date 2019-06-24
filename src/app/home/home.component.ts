@@ -1,9 +1,6 @@
+import { Subtopic } from './subtopic.model';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-// import { ConsoleReporter } from 'jasmine';
-
-// import { Topic } from './topic.model';
 
 @Component({
   selector: 'app-home',
@@ -11,51 +8,101 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  name: string;
   topics: any[];
-  // subtopics: any[];
   editOn = false;
   newtopic: any = {};
-  newsubtopic: any = {};
-  subtopics: any[];
-
+  subtopics: any[] = [];
+  newOn = false;
+  hint = false;
+  hint2 = false;
   constructor(public topicdata: DataService) {}
 
   ngOnInit() {
     this.topics = this.topicdata.getTopics();
-    this.subtopics = this.topicdata.getsubtopics();
     console.log(this.topics);
   }
 
   openInputs() {
-    this.editOn = true;
+    this.newOn = true;
+    this.hint = false;
+    this.hint2 = false;
+    this.editOn = false;
     this.newtopic = {};
-    this.newsubtopic = {};
+    this.subtopics = [{}];
   }
 
-  onEditTopic(item) {
-    this.editOn = true;
-    this.newtopic = item;
-    console.log(item);
-    this.newsubtopic = {};
-  }
-
-  addNewTopic(topic, subtopic) {
-    console.log(topic);
-    console.log(subtopic);
-    this.topicdata.addTopic(topic);
+  closeforms() {
+    this.newOn = false;
     this.editOn = false;
   }
 
-  addSubtopic(newsubtopic) {
-    console.log(newsubtopic);
-    this.topicdata.addsubtopic(newsubtopic);
+  // on edit form
+  onEditTopic(item) {
+    this.editOn = true;
+    this.newOn = false;
+    this.newtopic = item;
+    this.subtopics = item.subtopics;
+    console.log(item);
+    // this.newsubtopic = {};
+  }
+
+  // on save edit form
+  addReplaceTopic(topic, subtopic) {
+    console.log(topic);
+    console.log(subtopic);
+    if (topic.name === '') {
+      this.hint2 = true;
+    } else {
+      const newList = Object.assign(topic, subtopic);
+      console.log(newList);
+      this.topicdata.replaceTopic(newList);
+      this.editOn = false;
+      this.newOn = false;
+
+      this.hint2 = false;
+    }
+  }
+
+  addNewTopic(topic, subtopic) {
+    // console.log(topic.name);
+    if (topic.name === undefined) {
+      this.hint2 = true;
+    } else {
+      this.name = topic.name.toLowerCase();
+      console.log(this.name);
+      console.log(this.topics[1].name.toLowerCase());
+
+      if (this.searchForDuplicate(this.name) === true) {
+        this.hint = true;
+      } else {
+        const newList = Object.assign(topic, subtopic);
+        this.topicdata.addTopic(newList);
+        this.newOn = false;
+        this.hint = false;
+        this.hint2 = false;
+      }
+    }
+  }
+
+  searchForDuplicate(name) {
+    for (var i = 0; i < this.topics.length; i++) {
+      console.log('im here');
+      if (this.topics[i].name.toLowerCase() === name) {
+        return true;
+      }
+    }
+  }
+
+  addSubtopic() {
+    this.subtopics.push({});
   }
 
   deleteTopic(item) {
-    this.topicdata.deteteTopic(item);
+    this.topics.splice(this.topics.indexOf(item), 1);
   }
 
   deleteSubtopic(subs) {
-    this.topicdata.deteteSubtopic(subs);
+    this.subtopics.splice(this.subtopics.indexOf(subs), 1);
   }
 }
